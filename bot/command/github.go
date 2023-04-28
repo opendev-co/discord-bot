@@ -2,17 +2,17 @@ package command
 
 import (
 	"github.com/andreashgk/go-interactions/cmd"
-	"github.com/opendev-co/discord-bot/discord"
+	"github.com/opendev-co/discord-bot/util"
 )
 
 type Github struct {
-	Link string `description:"Github link"`
+	Link string `description:"Lien github"`
 }
 
 func (g Github) Run(interaction *cmd.Interaction) {
-	match := discord.GithubLinkMatch(g.Link)
+	match := util.GithubLinkMatch(g.Link)
 
-	if !discord.ValidGithubLink(match) {
+	if !util.ValidGithubLink(match) {
 		_, _ = interaction.Respond(cmd.MessageResponse{
 			Content:   "Le lien github est invalide et ou ne comporte aucune lignes à montrer",
 			Ephemeral: true,
@@ -21,7 +21,7 @@ func (g Github) Run(interaction *cmd.Interaction) {
 		return
 	}
 
-	message, ok := discord.FormatGithubLines(match)
+	message, ok := util.FormatGithubLines(match)
 
 	if !ok {
 		_, _ = interaction.Respond(cmd.MessageResponse{

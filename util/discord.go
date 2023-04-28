@@ -1,8 +1,9 @@
-package discord
+package util
 
 import (
 	"bytes"
 	"github.com/diamondburned/arikawa/v3/discord"
+	"github.com/opendev-co/discord-bot/bot"
 	"net/http"
 	"strconv"
 )
@@ -32,4 +33,18 @@ func RemoveMessagesIntegrations(token string, message discord.Message) (err erro
 	}
 
 	return nil
+}
+
+func HasPermission(guildID discord.GuildID, member discord.Member, permission discord.Permissions) bool {
+	for _, roleID := range member.RoleIDs {
+		role, err := bot.S.Role(guildID, roleID)
+		if err != nil {
+			continue
+		}
+
+		if role.Permissions.Has(permission) || role.Permissions.Has(discord.PermissionAdministrator) {
+			return true
+		}
+	}
+	return false
 }

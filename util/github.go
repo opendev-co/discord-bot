@@ -1,4 +1,4 @@
-package discord
+package util
 
 import (
 	"io"
@@ -61,7 +61,7 @@ func FormatGithubLines(match []string) (string, bool) {
 	extension := filepath.Ext(match[2])[1:]
 	characters := 0
 
-	message := "```" + extension + "\n"
+	message := "Lignes " + strconv.Itoa(start) + " à " + strconv.Itoa(end) + " du repo' <" + match[0] + ">```" + extension + "\n"
 
 	for i, line := range lines {
 		characters += len(line)

@@ -39,6 +39,7 @@ func main() {
 		cmd.New("hello", "Hello, world!").WithExecutor(command.HelloWorld{}),
 		cmd.New("calc", "Calculate expressions").WithExecutor(command.Calculate{}),
 		cmd.New("github", "Get repository lines").WithExecutor(command.Github{}),
+		cmd.New("clear", "Delete users messages").WithExecutor(command.Clear{}),
 	)
 	err = h.RegisterAll(s)
 	if err != nil {
