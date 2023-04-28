@@ -7,7 +7,7 @@ Vous devez définir ces variables d'environnement dans votre fichier config.env 
 TOKEN = votre token
 ```
 
-### Exécuter le bot sur Windows
+### Exécuter le bot
 ```go
 go run .
 ```
