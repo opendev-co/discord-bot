@@ -29,6 +29,7 @@ func main() {
 	// Create a new command handler.
 	h := cmd.NewHandler(nil).WithCommands(
 		cmd.New("hello", "Hello, world!").WithExecutor(command.HelloWorld{}),
+		cmd.New("calc", "Calculate expressions").WithExecutor(command.Calculate{}),
 	)
 	err = h.RegisterAll(s)
 	if err != nil {
