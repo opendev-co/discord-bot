@@ -6,7 +6,9 @@ import (
 	"github.com/diamondburned/arikawa/v3/gateway"
 	"github.com/diamondburned/arikawa/v3/state"
 	"github.com/joho/godotenv"
+	"github.com/opendev-co/discord-bot/bot"
 	"github.com/opendev-co/discord-bot/bot/command"
+	"github.com/opendev-co/discord-bot/bot/handler"
 	"log"
 	"os"
 	"os/signal"
@@ -26,10 +28,17 @@ func main() {
 	s := state.New("Bot " + tok)
 	s.AddIntents(gateway.IntentGuilds | gateway.IntentGuildMessages)
 
+	bot.S = s
+
+	// Initialize handlers
+	s.AddHandler(handler.MessageCreate)
+	s.AddHandler(handler.Ready)
+
 	// Create a new command handler.
 	h := cmd.NewHandler(nil).WithCommands(
 		cmd.New("hello", "Hello, world!").WithExecutor(command.HelloWorld{}),
 		cmd.New("calc", "Calculate expressions").WithExecutor(command.Calculate{}),
+		cmd.New("github", "Get repository lines").WithExecutor(command.Github{}),
 	)
 	err = h.RegisterAll(s)
 	if err != nil {
