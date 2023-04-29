@@ -15,9 +15,18 @@ type Calculate struct {
 
 var expressionReplacer = strings.NewReplacer("x", "*", "÷", "/")
 
+func containsLetter(s string) bool {
+	for _, v := range s {
+		if (v >= 'a' && v <= 'z') || (v >= 'A' && v <= 'Z') {
+			return true
+		}
+	}
+	return false
+}
+
 func (c Calculate) Run(interaction *cmd.Interaction) {
 	res, err := calculator.Calculate(expressionReplacer.Replace(strings.ToLower(c.Expression)))
-	if err != nil {
+	if err != nil || containsLetter(c.Expression) {
 		_, err = interaction.Respond(cmd.MessageResponse{
 			Embeds:    []discord.Embed{util.EmbedError("L'expression que vous avez spécifié est invalide")},
 			Ephemeral: true,
