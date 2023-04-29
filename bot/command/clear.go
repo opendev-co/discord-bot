@@ -22,7 +22,7 @@ func (c Clear) Run(interaction *cmd.Interaction) {
 
 	if c.Amount <= 0 {
 		_, _ = interaction.Respond(cmd.MessageResponse{
-			Content:   "Le nombre de messages à supprimer doit être supérieur à 0",
+			Embeds:    []discord.Embed{util.EmbedError("Le nombre de messages à supprimer doit être supérieur à 0")},
 			Ephemeral: true,
 		})
 		return
@@ -30,7 +30,7 @@ func (c Clear) Run(interaction *cmd.Interaction) {
 
 	if !util.HasPermission(interaction.GuildID(), *interaction.Member(), discord.PermissionManageMessages) {
 		_, _ = interaction.Respond(cmd.MessageResponse{
-			Content:   "Vous n'avez pas la permission de supprimer des messages",
+			Embeds:    []discord.Embed{util.EmbedError("Vous n'avez pas la permission de supprimer des messages")},
 			Ephemeral: true,
 		})
 
@@ -64,13 +64,13 @@ func (c Clear) Run(interaction *cmd.Interaction) {
 
 	if member != 0 {
 		_, _ = interaction.Respond(cmd.MessageResponse{
-			Content: fmt.Sprintf("%v messages de <@%v> ont été supprimés", amount, member),
+			Embeds: []discord.Embed{util.EmbedSuccess(fmt.Sprintf("%v messages de <@%v> ont été supprimés", amount, member))},
 		})
 
 		return
 	} else {
 		_, _ = interaction.Respond(cmd.MessageResponse{
-			Content: fmt.Sprintf("%v messages ont été supprimés", amount),
+			Embeds: []discord.Embed{util.EmbedSuccess(fmt.Sprintf("%v messages ont été supprimés", amount))},
 		})
 	}
 }

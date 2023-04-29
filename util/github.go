@@ -56,7 +56,7 @@ func FormatGithubLines(match []string) (string, bool) {
 		end = start + 4
 	}
 
-	lines = lines[start : end+1]
+	lines = lines[start-1 : end]
 
 	extension := filepath.Ext(match[2])[1:]
 	characters := 0
@@ -67,7 +67,7 @@ func FormatGithubLines(match []string) (string, bool) {
 		characters += len(line)
 
 		if characters > 1000 {
-			message += "\n\nLimit of characters reached, try to select in 2 parts the lines"
+			message += "\n\nLimite de caractères atteinte, essayez de sélectionner en 2 parties les lignes"
 			break
 		}
 

@@ -37,10 +37,11 @@ func main() {
 	// Create a new command handler.
 	h := cmd.NewHandler(nil).WithCommands(
 		cmd.New("hello", "Hello, world!").WithExecutor(command.HelloWorld{}),
-		cmd.New("calc", "Calculate expressions").WithExecutor(command.Calculate{}),
-		cmd.New("github", "Get repository lines").WithExecutor(command.Github{}),
-		cmd.New("clear", "Delete users messages").WithExecutor(command.Clear{}),
-		cmd.New("reputation", "Reputations commands").WithSubcommand("add", "Add reputation to a user", command.ReputationAdd{}).WithSubcommand("show", "Show reputation points of a user", command.ReputationShow{}),
+		cmd.New("calc", "Obtenir le résultat d'une expression mathématique").WithExecutor(command.Calculate{}),
+		cmd.New("github", "Obtenir les lignes d'un répertoire Github").WithExecutor(command.Github{}),
+		cmd.New("clear", "Supprimer des messages").WithExecutor(command.Clear{}),
+		cmd.New("reputation", "Commande de réputation").WithSubcommand("add", "Ajouter un point de réputation à un utilisateur", command.ReputationAdd{}).WithSubcommand("show", "Voir les points de réputation d'un utilisateur", command.ReputationShow{}),
+		cmd.New("rep", "Commande de réputation").WithSubcommand("add", "Ajouter un point de réputation à un utilisateur", command.ReputationAdd{}).WithSubcommand("show", "Voir les points de réputation d'un utilisateur", command.ReputationShow{}),
 	)
 	err = h.RegisterAll(s)
 	if err != nil {

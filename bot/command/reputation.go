@@ -5,6 +5,7 @@ import (
 	"github.com/andreashgk/go-interactions/cmd"
 	"github.com/diamondburned/arikawa/v3/discord"
 	"github.com/diamondburned/arikawa/v3/utils/json"
+	"github.com/opendev-co/discord-bot/util"
 	"os"
 	"sync"
 )
@@ -41,7 +42,7 @@ func init() {
 }
 
 type ReputationAdd struct {
-	Target cmd.User `description:"The user to add reputation to"`
+	Target cmd.User `description:"L'utilisateur dont vous souhaitez ajouter un point de réputation"`
 }
 
 func (c ReputationAdd) Run(interaction *cmd.Interaction) {
@@ -50,7 +51,8 @@ func (c ReputationAdd) Run(interaction *cmd.Interaction) {
 
 	if target == user {
 		_, err := interaction.Respond(cmd.MessageResponse{
-			Content: fmt.Sprintf("Vous ne pouvez pas ajouter de réputation à vous-même"),
+			Embeds:    []discord.Embed{util.EmbedError("Vous ne pouvez pas ajouter de réputation à vous-même")},
+			Ephemeral: true,
 		})
 		if err != nil {
 			fmt.Println(err)
@@ -62,7 +64,8 @@ func (c ReputationAdd) Run(interaction *cmd.Interaction) {
 	for _, v := range pts {
 		if v == user {
 			_, err := interaction.Respond(cmd.MessageResponse{
-				Content: fmt.Sprintf("Vous avez déjà ajouté un point de réputation à <@%v>", c.Target),
+				Embeds:    []discord.Embed{util.EmbedError(fmt.Sprintf("Vous avez déjà ajouté un point de réputation à <@%v>", c.Target))},
+				Ephemeral: true,
 			})
 			if err != nil {
 				fmt.Println(err)
@@ -75,7 +78,7 @@ func (c ReputationAdd) Run(interaction *cmd.Interaction) {
 	reps[target] = append(reps[target], user)
 
 	_, err := interaction.Respond(cmd.MessageResponse{
-		Content: fmt.Sprintf("Vous avez ajouté un point de réputation à <@%v>", c.Target),
+		Embeds: []discord.Embed{util.EmbedSuccess(fmt.Sprintf("Vous avez ajouté un point de réputation à <@%v>", c.Target))},
 	})
 	if err != nil {
 		fmt.Println(err)
@@ -83,7 +86,7 @@ func (c ReputationAdd) Run(interaction *cmd.Interaction) {
 }
 
 type ReputationShow struct {
-	Target cmd.Optional[cmd.User] `description:"The user to show reputation of"`
+	Target cmd.Optional[cmd.User] `description:"L'utilisateur dont vous souhaitez connaître la réputation"`
 }
 
 func (c ReputationShow) Run(interaction *cmd.Interaction) {
@@ -91,9 +94,13 @@ func (c ReputationShow) Run(interaction *cmd.Interaction) {
 	if c.Target.Provided() {
 		target = discord.UserID(c.Target.Get()).String()
 	}
+	var p = "point"
 	pts := reputations(target)
+	if len(pts) >= 1 {
+		p += "s"
+	}
 	_, err := interaction.Respond(cmd.MessageResponse{
-		Content: fmt.Sprintf("<@%v> a %v points de réputation", target, len(pts)),
+		Embeds: []discord.Embed{util.EmbedSuccess(fmt.Sprintf("<@%v> a %v %s de réputation", target, len(pts), p))},
 	})
 	if err != nil {
 		fmt.Println(err)
