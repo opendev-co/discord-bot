@@ -96,7 +96,7 @@ func (c ReputationShow) Run(interaction *cmd.Interaction) {
 	}
 	var p = "point"
 	pts := reputations(target)
-	if len(pts) >= 1 {
+	if len(pts) > 1 {
 		p += "s"
 	}
 	_, err := interaction.Respond(cmd.MessageResponse{
