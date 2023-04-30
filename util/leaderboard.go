@@ -28,10 +28,6 @@ func getDescription(reps map[string][]string, page int) (string, string, int) {
 		return m[keys[i]] > m[keys[j]]
 	})
 
-	for _, key := range keys {
-		fmt.Println(key, m[key])
-	}
-
 	i := separator * (page - 1)
 
 	for _, key := range keys {
