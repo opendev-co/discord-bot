@@ -32,7 +32,11 @@ func getDescription(reps map[string][]string, page int) (string, string, int) {
 
 	for _, key := range keys {
 		i++
-		message += fmt.Sprintf("- **%v**: <@%s> avec **%d** points\n", i, key, m[key])
+		pt := "point"
+		if pts := m[key]; pts > 1 {
+			pt += "s"
+		}
+		message += fmt.Sprintf("- **%v**: <@%s> avec **%d** %s\n", i, key, m[key], pt)
 	}
 
 	message += "\nCliquez sur le bouton ◀️ pour aller à la page précédente\nCliquez sur le bouton ▶ pour aller à la page suivante\n"
