@@ -12,18 +12,31 @@ func getDescription(reps map[string][]string, page int) (string, string, int) {
 	m := make(map[string]int)
 	separator := 10
 
+	m, maxPage := MapToPage(m, page, separator)
+	message := "Les points de réputations ne représentent rien ⚠️. Ils veulent seulement dire que la personne a aidé plusieurs personnes, ce n'est pas car une personne a beaucoup de points qu'il est de confiance !\n\n"
+
 	for key, value := range reps {
 		m[key] = len(value)
 	}
 
-	m, maxPage := MapToPage(m, page, separator)
-	message := "Les points de réputations ne représentent rien ⚠️. Ils veulent seulement dire que la personne a aidé plusieurs personnes, ce n'est pas car une personne a beaucoup de points qu'il est de confiance !\n\n"
+	var keys []string
+	for key := range m {
+		keys = append(keys, key)
+	}
+
+	sort.Slice(keys, func(i, j int) bool {
+		return m[keys[i]] > m[keys[j]]
+	})
+
+	for _, key := range keys {
+		fmt.Println(key, m[key])
+	}
 
 	i := separator * (page - 1)
 
-	for key, value := range m {
+	for _, key := range keys {
 		i++
-		message += fmt.Sprintf("- **%v**: <@%s> avec **%d** points\n", i, key, value)
+		message += fmt.Sprintf("- **%v**: <@%s> avec **%d** points\n", i, key, m[key])
 	}
 
 	message += "\nCliquez sur le bouton ◀️ pour aller à la page précédente\nCliquez sur le bouton ▶ pour aller à la page suivante\n"
