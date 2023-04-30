@@ -12,9 +12,6 @@ func getDescription(reps map[string][]string, page int) (string, string, int) {
 	m := make(map[string]int)
 	separator := 10
 
-	m, maxPage := MapToPage(m, page, separator)
-	message := "Les points de réputations ne représentent rien ⚠️. Ils veulent seulement dire que la personne a aidé plusieurs personnes, ce n'est pas car une personne a beaucoup de points qu'il est de confiance !\n\n"
-
 	for key, value := range reps {
 		m[key] = len(value)
 	}
@@ -29,6 +26,9 @@ func getDescription(reps map[string][]string, page int) (string, string, int) {
 	})
 
 	i := separator * (page - 1)
+
+	message := "Les points de réputations ne représentent rien ⚠️. Ils veulent seulement dire que la personne a aidé plusieurs personnes, ce n'est pas car une personne a beaucoup de points qu'il est de confiance !\n\n"
+	maxPage := int(math.Ceil(float64(len(reps)) / float64(separator)))
 
 	for _, key := range keys {
 		i++
@@ -80,47 +80,4 @@ func getReputationsPointsNumber(reps map[string][]string) int {
 		count += len(value)
 	}
 	return count
-}
-
-func MapToPage(m map[string]int, page int, separator int) (map[string]int, int) {
-	m = mapSort(m)
-
-	result := make(map[string]int)
-	pageMax := int(math.Ceil(float64(len(m)) / float64(separator)))
-
-	min := (page * separator) - separator
-	count := 1
-
-	max := min + separator
-
-	for key, value := range m {
-		if count > max {
-			continue
-		} else if count > min {
-			result[key] = value
-		}
-
-		count++
-	}
-
-	return result, pageMax
-}
-
-func mapSort(m map[string]int) map[string]int {
-	keys := make([]string, 0, len(m))
-	values := make([]int, 0, len(m))
-
-	for k, v := range m {
-		keys = append(keys, k)
-		values = append(values, v)
-	}
-
-	sort.SliceStable(values, func(i, j int) bool {
-		return values[i] > values[j]
-	})
-
-	for i, v := range values {
-		m[keys[i]] = v
-	}
-	return m
 }
