@@ -135,14 +135,15 @@ func (r ReputationTop) Run(interaction *cmd.Interaction) {
 
 			embed, components, _ := util.GetLeaderboardMessageArguments(reps, page)
 
-			if err != nil {
-				fmt.Println(err)
-			}
-
 			_, err = interaction.EditResponse(api.EditInteractionResponseData{
 				Embeds:     &[]discord.Embed{embed},
 				Components: &components,
 			})
+
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
 
 			_ = bot.S.RespondInteraction(m.ID, m.Token,
 				api.InteractionResponse{
