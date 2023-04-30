@@ -40,9 +40,10 @@ func main() {
 		cmd.New("calc", "Obtenir le résultat d'une expression mathématique").WithExecutor(command.Calculate{}),
 		cmd.New("github", "Obtenir les lignes d'un répertoire Github").WithExecutor(command.Github{}),
 		cmd.New("clear", "Supprimer des messages").WithExecutor(command.Clear{}),
-		cmd.New("reputation", "Commande de réputation").WithSubcommand("add", "Ajouter un point de réputation à un utilisateur", command.ReputationAdd{}).WithSubcommand("show", "Voir les points de réputation d'un utilisateur", command.ReputationShow{}),
-		cmd.New("rep", "Commande de réputation").WithSubcommand("add", "Ajouter un point de réputation à un utilisateur", command.ReputationAdd{}).WithSubcommand("show", "Voir les points de réputation d'un utilisateur", command.ReputationShow{}),
+		cmd.New("reputation", "Commande de réputation").WithSubcommand("add", "Ajouter un point de réputation à un utilisateur", command.ReputationAdd{}).WithSubcommand("show", "Voir les points de réputation d'un utilisateur", command.ReputationShow{}).WithSubcommand("top", "Voir les points de réputations de tous les utilisateurs", command.ReputationTop{}),
+		cmd.New("rep", "Commande de réputation").WithSubcommand("add", "Ajouter un point de réputation à un utilisateur", command.ReputationAdd{}).WithSubcommand("show", "Voir les points de réputation d'un utilisateur", command.ReputationShow{}).WithSubcommand("top", "Voir les points de réputations de tous les utilisateurs", command.ReputationTop{}),
 	)
+
 	err = h.RegisterAll(s)
 	if err != nil {
 		panic(err)
